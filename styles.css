@@ -67,7 +67,12 @@ select {
   font-weight: 900;
   gap: 10px;
   letter-spacing: 0;
-  text-transform: uppercase;
+  min-width: 0;
+}
+
+.brand span:last-child {
+  font-size: clamp(0.82rem, 2vw, 1rem);
+  line-height: 1.15;
 }
 
 .brand-mark {
@@ -658,6 +663,36 @@ textarea {
   white-space: nowrap;
 }
 
+.price-options {
+  align-self: center;
+  display: grid;
+  gap: 8px;
+  min-width: 180px;
+}
+
+.price-option {
+  align-items: center;
+  background: rgba(90, 52, 37, 0.08);
+  border: 1px solid rgba(33, 23, 20, 0.1);
+  border-radius: 8px;
+  color: var(--coffee-dark);
+  display: flex;
+  gap: 14px;
+  justify-content: space-between;
+  min-height: 42px;
+  padding: 9px 12px;
+}
+
+.price-option span,
+.price-option strong {
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.price-option strong {
+  color: var(--rose);
+}
+
 .empty-state {
   border: 1px dashed var(--line);
   border-radius: 8px;
@@ -731,6 +766,11 @@ textarea {
     grid-column: 2;
   }
 
+  .price-options {
+    grid-column: 2;
+    min-width: 0;
+  }
+
 }
 
 @media (max-width: 520px) {
@@ -767,6 +807,10 @@ textarea {
   }
 
   .price {
+    grid-column: auto;
+  }
+
+  .price-options {
     grid-column: auto;
   }
 

@@ -500,7 +500,17 @@ window.MOLIN_MENU_PRODUCTS = [
     "category": "Sıcak İçecekler",
     "subcategory": "Kahve",
     "description": "",
-    "price": "0 TL",
+    "price": "",
+    "priceOptions": [
+      {
+        "label": "Single",
+        "price": "95 TL"
+      },
+      {
+        "label": "Double",
+        "price": "175 TL"
+      }
+    ],
     "image": "images/056-sicak-icecekler-espresso.jpeg"
   },
   {

@@ -138,15 +138,32 @@ function isVisibleProduct(product) {
   return MENU_CATEGORIES.includes(product.category);
 }
 
+function productPriceTemplate(product) {
+  if (Array.isArray(product.priceOptions) && product.priceOptions.length) {
+    return `
+      <div class="price-options">
+        ${product.priceOptions.map((option) => `
+          <div class="price-option">
+            <span>${escapeHtml(option.label)}</span>
+            <strong>${escapeHtml(option.price)}</strong>
+          </div>
+        `).join("")}
+      </div>
+    `;
+  }
+
+  return `<strong class="price">${escapeHtml(product.price)}</strong>`;
+}
+
 function productTemplate(product) {
   return `
-    <article class="menu-item">
+    <article class="menu-item ${product.priceOptions?.length ? "has-price-options" : ""}">
       <img src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}">
       <div>
         <h2>${escapeHtml(product.name)}</h2>
         <p>${escapeHtml(product.description)}</p>
       </div>
-      <strong class="price">${escapeHtml(product.price)}</strong>
+      ${productPriceTemplate(product)}
     </article>
   `;
 }
