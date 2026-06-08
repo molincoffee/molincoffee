@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Molin Kafe Menü</title>
+    <meta name="description" content="Molin Kafe Antalya dijital menü.">
+    <link rel="preconnect" href="https://images.unsplash.com">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body class="menu-page">
+    <header class="menu-header">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">M</span>
+        <span>Molin Kafe</span>
+      </a>
+      <a class="button small" href="index.html">Ana Sayfa</a>
+    </header>
+
+    <main class="menu-shell">
+      <section class="menu-hero">
+        <p class="eyebrow">QR Menü</p>
+        <h1>Menü</h1>
+        <p>Tatlılar, kahveler ve içecekler. Fiyatlar panelden güncellenebilir.</p>
+      </section>
+
+      <div class="menu-tools">
+        <label class="search-box">
+          <span>Ürün ara</span>
+          <input type="search" data-menu-search placeholder="Cheesecake, latte, limonata">
+        </label>
+        <div class="category-tabs" data-category-tabs aria-label="Menü kategorileri"></div>
+      </div>
+
+      <section class="menu-list" data-menu-list aria-live="polite"></section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
