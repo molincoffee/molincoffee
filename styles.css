@@ -667,3 +667,9 @@ textarea {
     gap: 8px;
   }
 }
+
+@media (max-width: 640px) {
+  .menu-qr-image {
+    display: none;
+  }
+}
