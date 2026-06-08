@@ -407,10 +407,15 @@ p {
   background: #f7efe4;
 }
 
+.menu-page .menu-header {
+  padding: 10px clamp(16px, 3vw, 36px);
+  position: relative;
+}
+
 .menu-shell {
   margin: 0 auto;
   max-width: 1040px;
-  padding: clamp(22px, 4vw, 48px) 18px 80px;
+  padding: 12px 18px 72px;
 }
 
 .menu-hero {
@@ -421,8 +426,8 @@ p {
   display: grid;
   gap: 32px;
   grid-template-columns: minmax(0, 1fr) 190px;
-  margin-bottom: 22px;
-  padding: clamp(26px, 5vw, 54px);
+  margin-bottom: 14px;
+  padding: clamp(22px, 4vw, 42px);
 }
 
 .menu-hero h1 {
@@ -445,11 +450,18 @@ p {
 }
 
 .menu-tools {
-  background: rgba(255, 255, 255, 0.62);
-  border: 1px solid var(--line);
+  background:
+    linear-gradient(90deg, rgba(255, 249, 241, 0), rgba(255, 249, 241, 0.94) 92%) right / 44px 100% no-repeat,
+    rgba(255, 249, 241, 0.84);
+  border: 1px solid rgba(33, 23, 20, 0.1);
   border-radius: 8px;
-  margin-bottom: 22px;
-  padding: 14px;
+  margin-bottom: 14px;
+  padding: 8px;
+  position: sticky;
+  top: 0;
+  z-index: 18;
+  backdrop-filter: blur(18px);
+  box-shadow: 0 10px 30px rgba(45, 23, 16, 0.08);
 }
 
 .search-box {
@@ -482,26 +494,62 @@ textarea {
 
 .category-tabs {
   display: flex;
-  gap: 8px;
-  margin-top: 14px;
+  gap: 6px;
   overflow-x: auto;
-  padding-bottom: 4px;
+  padding: 2px 32px 2px 2px;
+  scrollbar-width: none;
+}
+
+.category-tabs::-webkit-scrollbar {
+  display: none;
 }
 
 .category-tabs button {
-  background: transparent;
+  align-items: center;
+  background: rgba(255, 253, 248, 0.78);
   border: 1px solid var(--line);
-  border-radius: 999px;
+  border-radius: 8px;
   color: var(--coffee-dark);
   cursor: pointer;
+  display: inline-flex;
   flex: 0 0 auto;
+  gap: 9px;
+  font-size: 0.92rem;
   font-weight: 800;
-  min-height: 42px;
-  padding: 0 16px;
+  min-height: 38px;
+  padding: 0 12px;
+  transition: background 160ms ease, border-color 160ms ease, color 160ms ease, transform 160ms ease;
+  white-space: nowrap;
+}
+
+.category-tabs button:hover {
+  border-color: rgba(90, 52, 37, 0.28);
+  transform: translateY(-1px);
 }
 
 .category-tabs button.active {
   background: var(--coffee-dark);
+  border-color: var(--coffee-dark);
+  box-shadow: 0 8px 18px rgba(42, 20, 13, 0.18);
+  color: #fff8ec;
+}
+
+.category-tabs small {
+  align-items: center;
+  background: rgba(42, 20, 13, 0.08);
+  border-radius: 999px;
+  color: var(--muted);
+  display: inline-flex;
+  font-size: 0.72rem;
+  font-weight: 900;
+  height: 22px;
+  justify-content: center;
+  min-width: 24px;
+  padding: 0 7px;
+}
+
+.category-tabs button.active small {
+  background: rgba(255, 248, 236, 0.18);
   color: #fff8ec;
 }
 

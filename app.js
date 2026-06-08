@@ -93,7 +93,6 @@ function productTemplate(product) {
 function initMenu() {
   const list = document.querySelector("[data-menu-list]");
   const tabs = document.querySelector("[data-category-tabs]");
-  const search = document.querySelector("[data-menu-search]");
   if (!list || !tabs) return;
 
   const products = getProducts();
@@ -102,21 +101,31 @@ function initMenu() {
 
   function renderTabs() {
     tabs.innerHTML = categories
-      .map((category) => `<button type="button" class="${category === activeCategory ? "active" : ""}" data-category="${category}">${category}</button>`)
+      .map((category) => {
+        const count = category === "Tümü"
+          ? products.length
+          : products.filter((product) => product.category === category).length;
+        const isActive = category === activeCategory;
+
+        return `
+          <button type="button" class="${isActive ? "active" : ""}" data-category="${category}" aria-pressed="${isActive}">
+            <span>${category}</span>
+            <small>${count}</small>
+          </button>
+        `;
+      })
       .join("");
   }
 
   function renderProducts() {
-    const term = (search?.value || "").toLocaleLowerCase("tr-TR").trim();
     const filtered = products.filter((product) => {
       const matchesCategory = activeCategory === "Tümü" || product.category === activeCategory;
-      const haystack = `${product.name} ${product.description} ${product.category}`.toLocaleLowerCase("tr-TR");
-      return matchesCategory && haystack.includes(term);
+      return matchesCategory;
     });
 
     list.innerHTML = filtered.length
       ? filtered.map(productTemplate).join("")
-      : `<div class="empty-state">Bu arama için ürün bulunamadı.</div>`;
+      : `<div class="empty-state">Bu kategori için ürün bulunamadı.</div>`;
   }
 
   tabs.addEventListener("click", (event) => {
@@ -127,7 +136,6 @@ function initMenu() {
     renderProducts();
   });
 
-  search?.addEventListener("input", renderProducts);
   renderTabs();
   renderProducts();
 }
