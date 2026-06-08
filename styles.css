@@ -558,6 +558,63 @@ textarea {
   gap: 14px;
 }
 
+.menu-subcategory {
+  display: grid;
+  gap: 12px;
+}
+
+.subcategory-heading {
+  align-items: center;
+  background: rgba(90, 52, 37, 0.12);
+  border: 1px solid rgba(33, 23, 20, 0.12);
+  border-radius: 8px;
+  color: var(--coffee-dark);
+  cursor: pointer;
+  display: flex;
+  font-size: clamp(1.05rem, 3.4vw, 1.35rem);
+  font-weight: 900;
+  justify-content: space-between;
+  min-height: 64px;
+  padding: 14px 18px;
+  text-align: left;
+  width: 100%;
+}
+
+.subcategory-heading::after {
+  align-items: center;
+  border: 2px solid rgba(42, 20, 13, 0.42);
+  border-radius: 50%;
+  content: "+";
+  display: inline-flex;
+  flex: 0 0 auto;
+  font-size: 1.45rem;
+  height: 40px;
+  justify-content: center;
+  line-height: 1;
+  width: 40px;
+}
+
+.subcategory-heading[aria-expanded="true"]::after {
+  content: "-";
+}
+
+.subcategory-heading small {
+  background: rgba(42, 20, 13, 0.1);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  margin-left: auto;
+  margin-right: 12px;
+  min-width: 26px;
+  padding: 5px 8px;
+  text-align: center;
+}
+
+.subcategory-products {
+  display: grid;
+  gap: 12px;
+}
+
 .menu-item {
   background: #fffdf8;
   border: 1px solid var(--line);
@@ -607,6 +664,10 @@ textarea {
   color: var(--muted);
   padding: 28px;
   text-align: center;
+}
+
+.hidden {
+  display: none !important;
 }
 
 @media (max-width: 800px) {

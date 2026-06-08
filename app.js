@@ -1,4 +1,29 @@
-const defaultProducts = [
+const MENU_CATEGORIES = [
+  "Tatlılar",
+  "Soğuk İçecekler",
+  "Sıcak İçecekler",
+  // "Kruvasan Sandviç ve Kahvaltılar",
+  "Dondurmalar ve Ekstralar"
+];
+const SUBCATEGORY_OPTIONS = {
+  "Soğuk İçecekler": [
+    "Molin Special İçecekler",
+    "Soğuk Kahveler",
+    "Milk Shake",
+    "Frozen",
+    "Taze Sıkma Meyve Suları",
+    "Limonata",
+    "Şişe ve Kutu İçecekler"
+  ],
+  "Sıcak İçecekler": [
+    "Kahve",
+    "Çay"
+  ]
+};
+
+const defaultProducts = typeof window !== "undefined" && window.MOLIN_MENU_PRODUCTS
+  ? window.MOLIN_MENU_PRODUCTS
+  : [
   {
     id: "san-sebastian",
     category: "Tatlılar",
@@ -73,30 +98,103 @@ const defaultProducts = [
   }
 ];
 
-function getProducts() {
-  return defaultProducts;
+async function getProducts() {
+  return defaultProducts.map(normalizeProduct);
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function normalizeProduct(product) {
+  if (product.category === "Kahveler") {
+    return { ...product, category: "Sıcak İçecekler", subcategory: product.subcategory || "Kahve" };
+  }
+
+  if (product.category === "Atıştırmalıklar") {
+    return { ...product, category: "Kruvasan Sandviç ve Kahvaltılar" };
+  }
+
+  if (product.category === "Soğuk İçecekler" && !product.subcategory) {
+    const subcategory = product.name.toLocaleLowerCase("tr-TR").includes("limonata")
+      ? "Limonata"
+      : "Soğuk Kahveler";
+    return { ...product, subcategory };
+  }
+
+  if (product.category === "Sıcak İçecekler" && !product.subcategory) {
+    return { ...product, subcategory: "Kahve" };
+  }
+
+  return product;
+}
+
+function isVisibleProduct(product) {
+  return MENU_CATEGORIES.includes(product.category);
 }
 
 function productTemplate(product) {
   return `
     <article class="menu-item">
-      <img src="${product.image}" alt="${product.name}">
+      <img src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}">
       <div>
-        <h2>${product.name}</h2>
-        <p>${product.description}</p>
+        <h2>${escapeHtml(product.name)}</h2>
+        <p>${escapeHtml(product.description)}</p>
       </div>
-      <strong class="price">${product.price}</strong>
+      <strong class="price">${escapeHtml(product.price)}</strong>
     </article>
   `;
 }
 
-function initMenu() {
+function getMenuCategories(products) {
+  const productCategories = products.filter(isVisibleProduct).map((product) => product.category);
+  return ["Tümü", ...MENU_CATEGORIES, ...productCategories.filter((category) => !MENU_CATEGORIES.includes(category))];
+}
+
+function shouldGroupBySubcategory(category) {
+  return Boolean(SUBCATEGORY_OPTIONS[category]);
+}
+
+function groupedProductsTemplate(products, category) {
+  const order = SUBCATEGORY_OPTIONS[category] || [];
+  const groups = new Map(order.map((subcategory) => [subcategory, []]));
+
+  products.forEach((product) => {
+    const subcategory = product.subcategory || "Diğer";
+    if (!groups.has(subcategory)) {
+      groups.set(subcategory, []);
+    }
+    groups.get(subcategory).push(product);
+  });
+
+  return [...groups.entries()]
+    .filter(([, groupProducts]) => groupProducts.length)
+    .map(([subcategory, groupProducts]) => `
+      <section class="menu-subcategory">
+        <button class="subcategory-heading" type="button" data-subcategory-toggle aria-expanded="false">
+          <span>${escapeHtml(subcategory)}</span>
+          <small>${groupProducts.length}</small>
+        </button>
+        <div class="subcategory-products hidden">
+          ${groupProducts.map(productTemplate).join("")}
+        </div>
+      </section>
+    `)
+    .join("");
+}
+
+async function initMenu() {
   const list = document.querySelector("[data-menu-list]");
   const tabs = document.querySelector("[data-category-tabs]");
   if (!list || !tabs) return;
 
-  const products = getProducts();
-  const categories = ["Tümü", ...new Set(products.map((product) => product.category))];
+  const products = (await getProducts()).filter(isVisibleProduct);
+  const categories = [...new Set(getMenuCategories(products))];
   let activeCategory = "Tümü";
 
   function renderTabs() {
@@ -124,7 +222,9 @@ function initMenu() {
     });
 
     list.innerHTML = filtered.length
-      ? filtered.map(productTemplate).join("")
+      ? shouldGroupBySubcategory(activeCategory)
+        ? groupedProductsTemplate(filtered, activeCategory)
+        : filtered.map(productTemplate).join("")
       : `<div class="empty-state">Bu kategori için ürün bulunamadı.</div>`;
   }
 
@@ -134,6 +234,17 @@ function initMenu() {
     activeCategory = button.dataset.category;
     renderTabs();
     renderProducts();
+  });
+
+  list.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-subcategory-toggle]");
+    if (!button) return;
+
+    const group = button.closest(".menu-subcategory");
+    const productsContainer = group?.querySelector(".subcategory-products");
+    const isExpanded = button.getAttribute("aria-expanded") === "true";
+    button.setAttribute("aria-expanded", String(!isExpanded));
+    productsContainer?.classList.toggle("hidden", isExpanded);
   });
 
   renderTabs();
