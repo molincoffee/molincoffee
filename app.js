@@ -155,10 +155,22 @@ function productPriceTemplate(product) {
   return `<strong class="price">${escapeHtml(product.price)}</strong>`;
 }
 
+function resolveImagePath(src) {
+  if (/^(https?:)?\/\//.test(src) || src.startsWith("data:") || src.startsWith("/")) {
+    return src;
+  }
+
+  if (window.location.protocol === "file:") {
+    return window.location.pathname.includes("/menu/") ? `../${src}` : src;
+  }
+
+  return `/${src}`;
+}
+
 function productTemplate(product) {
   return `
     <article class="menu-item ${product.priceOptions?.length ? "has-price-options" : ""}">
-      <img src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}">
+      <img src="${escapeHtml(resolveImagePath(product.image))}" alt="${escapeHtml(product.name)}" loading="lazy">
       <div>
         <h2>${escapeHtml(product.name)}</h2>
         <p>${escapeHtml(product.description)}</p>
@@ -245,12 +257,35 @@ async function initMenu() {
       : `<div class="empty-state">Bu kategori için ürün bulunamadı.</div>`;
   }
 
+  function scrollMenuToStart() {
+    const tools = document.querySelector(".menu-tools");
+    const offset = tools ? tools.offsetHeight + 12 : 12;
+    const top = list.getBoundingClientRect().top + window.scrollY - offset;
+
+    window.scrollTo({
+      top: Math.max(0, top),
+      behavior: "auto"
+    });
+  }
+
+  function scheduleMenuScroll() {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(scrollMenuToStart);
+    });
+  }
+
   tabs.addEventListener("click", (event) => {
     const button = event.target.closest("button[data-category]");
     if (!button) return;
     activeCategory = button.dataset.category;
     renderTabs();
     renderProducts();
+    tabs.querySelector("button.active")?.scrollIntoView({
+      behavior: "smooth",
+      inline: "center",
+      block: "nearest"
+    });
+    scheduleMenuScroll();
   });
 
   list.addEventListener("click", (event) => {
@@ -282,5 +317,14 @@ function initNav() {
   });
 }
 
+function initLocalFileLinks() {
+  if (window.location.protocol !== "file:") return;
+
+  document.querySelectorAll('a[href="menu/"]').forEach((link) => {
+    link.setAttribute("href", "menu/index.html");
+  });
+}
+
+initLocalFileLinks();
 initNav();
 initMenu();
