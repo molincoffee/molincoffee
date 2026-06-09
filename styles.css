@@ -251,17 +251,17 @@ p {
 .feature-grid {
   display: grid;
   gap: 18px;
-  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
 .feature-grid article {
   border-left: 1px solid rgba(255, 248, 236, 0.24);
-  padding: 10px 24px;
+  padding: 10px clamp(14px, 1.4vw, 24px);
 }
 
 .feature-grid h2 {
   color: #fff8ec;
-  font-size: 1.6rem;
+  font-size: clamp(1.2rem, 1.55vw, 1.6rem);
   line-height: 1.2;
 }
 
@@ -369,8 +369,8 @@ p {
 }
 
 .contact-layout {
-  align-items: stretch;
-  grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr);
+  align-items: center;
+  grid-template-columns: minmax(0, 0.92fr) minmax(460px, 1.08fr);
 }
 
 .contact-copy {
@@ -397,14 +397,15 @@ p {
   border: 1px solid rgba(255, 248, 236, 0.22);
   border-radius: 8px;
   box-shadow: 0 20px 44px rgba(33, 23, 20, 0.18);
+  justify-self: stretch;
   overflow: hidden;
+  width: 100%;
 }
 
 .map-card iframe {
-  aspect-ratio: 16 / 10;
   border: 0;
   display: block;
-  min-height: 280px;
+  height: clamp(340px, 28vw, 440px);
   width: 100%;
 }
 
@@ -415,6 +416,12 @@ p {
   display: flex;
   justify-content: space-between;
   padding: 24px clamp(20px, 5vw, 72px);
+}
+
+@media (max-width: 1080px) {
+  .contact-layout {
+    grid-template-columns: 1fr;
+  }
 }
 
 .menu-page {
