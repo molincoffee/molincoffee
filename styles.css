@@ -199,8 +199,7 @@ p {
   text-transform: uppercase;
 }
 
-.hero-actions,
-.form-actions {
+.hero-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
@@ -233,19 +232,6 @@ p {
 .button.secondary {
   background: var(--coffee-dark);
   color: #fff8ec;
-}
-
-.button.ghost {
-  background: transparent;
-  border-color: var(--line);
-  color: var(--coffee-dark);
-}
-
-.button.small {
-  background: var(--coffee-dark);
-  color: #fff8ec;
-  min-height: 40px;
-  padding: 0 16px;
 }
 
 .section {

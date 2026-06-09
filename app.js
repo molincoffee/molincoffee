@@ -2,9 +2,13 @@ const MENU_CATEGORIES = [
   "Tatlılar",
   "Soğuk İçecekler",
   "Sıcak İçecekler",
-  // "Kruvasan Sandviç ve Kahvaltılar",
   "Dondurmalar ve Ekstralar"
 ];
+
+const HIDDEN_CATEGORIES = new Set([
+  "Kruvasan Sandviç ve Kahvaltılar"
+]);
+
 const SUBCATEGORY_OPTIONS = {
   "Soğuk İçecekler": [
     "Molin Special İçecekler",
@@ -21,85 +25,8 @@ const SUBCATEGORY_OPTIONS = {
   ]
 };
 
-const defaultProducts = typeof window !== "undefined" && window.MOLIN_MENU_PRODUCTS
-  ? window.MOLIN_MENU_PRODUCTS
-  : [
-  {
-    id: "san-sebastian",
-    category: "Tatlılar",
-    name: "San Sebastian Cheesecake",
-    description: "Akışkan çikolata sosu ve yoğun krem peynir dokusuyla.",
-    price: "165 TL",
-    image: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=500&q=80"
-  },
-  {
-    id: "magnolia",
-    category: "Tatlılar",
-    name: "Çilekli Magnolia",
-    description: "Taze çilek, vanilyalı krema ve bisküvi katmanları.",
-    price: "135 TL",
-    image: "https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=500&q=80"
-  },
-  {
-    id: "brownie",
-    category: "Tatlılar",
-    name: "Belçika Çikolatalı Brownie",
-    description: "Sıcak servis, kakao yoğunluğu yüksek yumuşak brownie.",
-    price: "125 TL",
-    image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=500&q=80"
-  },
-  {
-    id: "latte",
-    category: "Kahveler",
-    name: "Caffe Latte",
-    description: "Taze espresso, ipeksi süt köpüğü ve dengeli içim.",
-    price: "95 TL",
-    image: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=500&q=80"
-  },
-  {
-    id: "americano",
-    category: "Kahveler",
-    name: "Americano",
-    description: "Espresso üzerine sıcak su ile sade ve güçlü kahve.",
-    price: "85 TL",
-    image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=500&q=80"
-  },
-  {
-    id: "mocha",
-    category: "Kahveler",
-    name: "Mocha",
-    description: "Espresso, süt ve çikolatanın yumuşak birleşimi.",
-    price: "110 TL",
-    image: "https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?auto=format&fit=crop&w=500&q=80"
-  },
-  {
-    id: "ice-latte",
-    category: "Soğuk İçecekler",
-    name: "Ice Latte",
-    description: "Soğuk süt, buz ve çift shot espresso.",
-    price: "105 TL",
-    image: "https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=500&q=80"
-  },
-  {
-    id: "limonata",
-    category: "Soğuk İçecekler",
-    name: "Ev Yapımı Limonata",
-    description: "Taze limon, nane ve dengeli şeker oranı.",
-    price: "90 TL",
-    image: "https://images.unsplash.com/photo-1621263764928-df1444c5e859?auto=format&fit=crop&w=500&q=80"
-  },
-  {
-    id: "tost",
-    category: "Atıştırmalıklar",
-    name: "Mozzarella Tost",
-    description: "Ekşi mayalı ekmek, mozzarella, domates ve fesleğen.",
-    price: "145 TL",
-    image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=500&q=80"
-  }
-];
-
-async function getProducts() {
-  return defaultProducts.map(normalizeProduct);
+function getProducts() {
+  return Array.isArray(window.MOLIN_MENU_PRODUCTS) ? window.MOLIN_MENU_PRODUCTS : [];
 }
 
 function escapeHtml(value) {
@@ -111,31 +38,8 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
-function normalizeProduct(product) {
-  if (product.category === "Kahveler") {
-    return { ...product, category: "Sıcak İçecekler", subcategory: product.subcategory || "Kahve" };
-  }
-
-  if (product.category === "Atıştırmalıklar") {
-    return { ...product, category: "Kruvasan Sandviç ve Kahvaltılar" };
-  }
-
-  if (product.category === "Soğuk İçecekler" && !product.subcategory) {
-    const subcategory = product.name.toLocaleLowerCase("tr-TR").includes("limonata")
-      ? "Limonata"
-      : "Soğuk Kahveler";
-    return { ...product, subcategory };
-  }
-
-  if (product.category === "Sıcak İçecekler" && !product.subcategory) {
-    return { ...product, subcategory: "Kahve" };
-  }
-
-  return product;
-}
-
 function isVisibleProduct(product) {
-  return MENU_CATEGORIES.includes(product.category);
+  return !HIDDEN_CATEGORIES.has(product.category) && MENU_CATEGORIES.includes(product.category);
 }
 
 function productPriceTemplate(product) {
@@ -155,22 +59,10 @@ function productPriceTemplate(product) {
   return `<strong class="price">${escapeHtml(product.price)}</strong>`;
 }
 
-function resolveImagePath(src) {
-  if (/^(https?:)?\/\//.test(src) || src.startsWith("data:") || src.startsWith("/")) {
-    return src;
-  }
-
-  if (window.location.protocol === "file:") {
-    return window.location.pathname.includes("/menu/") ? `../${src}` : src;
-  }
-
-  return `/${src}`;
-}
-
 function productTemplate(product) {
   return `
-    <article class="menu-item ${product.priceOptions?.length ? "has-price-options" : ""}">
-      <img src="${escapeHtml(resolveImagePath(product.image))}" alt="${escapeHtml(product.name)}" loading="lazy">
+    <article class="menu-item">
+      <img src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}" loading="lazy">
       <div>
         <h2>${escapeHtml(product.name)}</h2>
         <p>${escapeHtml(product.description)}</p>
@@ -217,12 +109,12 @@ function groupedProductsTemplate(products, category) {
     .join("");
 }
 
-async function initMenu() {
+function initMenu() {
   const list = document.querySelector("[data-menu-list]");
   const tabs = document.querySelector("[data-category-tabs]");
   if (!list || !tabs) return;
 
-  const products = (await getProducts()).filter(isVisibleProduct);
+  const products = getProducts().filter(isVisibleProduct);
   const categories = [...new Set(getMenuCategories(products))];
   let activeCategory = "Tümü";
 
@@ -317,14 +209,5 @@ function initNav() {
   });
 }
 
-function initLocalFileLinks() {
-  if (window.location.protocol !== "file:") return;
-
-  document.querySelectorAll('a[href="menu/"]').forEach((link) => {
-    link.setAttribute("href", "menu/index.html");
-  });
-}
-
-initLocalFileLinks();
 initNav();
 initMenu();
