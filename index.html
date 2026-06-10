@@ -3,13 +3,133 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Molin Coffee Co. &amp; Desserts</title>
-    <meta http-equiv="refresh" content="0; url=home/">
-    <script>
-      window.location.replace("home/");
-    </script>
+    <title>Molin Coffee Co. &amp; Desserts | Tatlı ve Kahve</title>
+    <meta name="description" content="Molin Coffee Co. &amp; Desserts Antalya'da tatlı, kahve ve ferah içecekleriyle sıcak bir buluşma noktası.">
+    <link rel="preconnect" href="https://images.unsplash.com">
+    <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <a href="home/">Molin Coffee Co. &amp; Desserts ana sayfasına git</a>
+    <header class="site-header" data-header>
+      <a class="brand" href="#anasayfa" aria-label="Molin Coffee Co. &amp; Desserts ana sayfa">
+        <span class="brand-mark">M</span>
+        <span>MOLIN COFFEE CO. &amp; DESSERTS</span>
+      </a>
+      <button class="nav-toggle" type="button" data-nav-toggle aria-label="Menüyü aç">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="site-nav" data-nav>
+        <a href="#anasayfa">Ana Sayfa</a>
+        <a href="#hakkimizda">Hakkımızda</a>
+        <a href="menu/">Menü</a>
+        <a href="#iletisim">İletişim</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" id="anasayfa">
+        <div class="hero-bg" role="img" aria-label="Kahve ve tatlı masası"></div>
+        <div class="hero-content">
+          <h1>Molin Coffee</h1>
+          <p class="hero-copy">Belçika çikolatası, dünya kahveleri, chocolate coffee ve special tatlılarla hazırlanan rafine bir Molin deneyimi.</p>
+          <div class="hero-actions">
+            <a class="button primary" href="menu/">Menüyü Gör</a>
+            <a class="button secondary" href="#iletisim">Bize Ulaş</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section intro-band" aria-label="Öne çıkanlar">
+        <div class="section-inner feature-grid">
+          <article>
+            <span class="feature-icon">01</span>
+            <h2>Special<br>Tatlı</h2>
+            <p>Vitrinde günlük hazırlanan, Molin yorumuyla sunulan özel tatlılar.</p>
+          </article>
+          <article>
+            <span class="feature-icon">02</span>
+            <h2>Çekirdek Kahve</h2>
+            <p>Taze öğütülen çekirdeklerle dengeli, aromatik ve özenli kahve deneyimi.</p>
+          </article>
+          <article>
+            <span class="feature-icon">03</span>
+            <h2>Belçika Çikolatası</h2>
+            <p>Tatlı ve içeceklerde yoğun lezzet veren kaliteli Belçika çikolatası.</p>
+          </article>
+          <article>
+            <span class="feature-icon">04</span>
+            <h2>Chocolate Coffee</h2>
+            <p>Kahve ve çikolatanın yumuşak birleşimiyle hazırlanan özel reçeteler.</p>
+          </article>
+          <article>
+            <span class="feature-icon">05</span>
+            <h2>Dünya Kahveleri</h2>
+            <p>Farklı damak zevklerine uygun, seçilmiş dünya kahveleri ve klasikler.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="menu-ozet">
+        <div class="section-inner split">
+          <div>
+            <p class="eyebrow">Menüden seçtiklerimiz</p>
+            <h2>Vitrinden fincana uzanan lezzetler</h2>
+            <p>Menü tatlılar, kahveler, soğuk içecekler ve atıştırmalıklar olarak sade biçimde ayrıldı. Her ürün fotoğrafı, açıklaması ve fiyatıyla QR menü düzeninde sunulur.</p>
+            <div class="menu-cta-row">
+              <a class="text-link" href="menu/">Tüm menüyü incele</a>
+              <a class="qr-mini" href="menu/" aria-label="QR menüyü aç">
+                <img src="assets/qr-menu-tight.png" alt="Molin Coffee Co. &amp; Desserts QR menü kodu">
+                <span>QR Menü</span>
+              </a>
+            </div>
+          </div>
+          <div class="showcase-grid" aria-label="Ürün görselleri">
+            <img src="images/001-tatlilar-moonlight.jpg" alt="Moonlight tatlı">
+            <img src="https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=700&q=80" alt="Latte kahve">
+            <img src="images/007-tatlilar-san-sebastian.png" alt="San Sebastian">
+          </div>
+        </div>
+      </section>
+
+      <section class="section about-section" id="hakkimizda">
+        <div class="section-inner about-layout">
+          <img src="assets/cafe-molin-exterior.jpeg" alt="Cafe Molin dış mekan">
+          <div>
+            <p class="eyebrow">Hakkımızda</p>
+            <h2>Antalya'da sakin, tatlı bir kahve molası</h2>
+            <p>Molin Coffee Co. &amp; Desserts, Antalya'da kahve kokusunu taze tatlılarla birleştiren samimi bir lezzet durağı olarak tasarlandı. Gün içinde kısa bir mola, arkadaş buluşması ya da tatlı bir kapanış için sade, rahat ve lezzet odaklı bir deneyim sunuyoruz.</p>
+            <p>Her üründe tazelik, dengeli tat ve hızlı servis önceliğimiz. Menü yapısı da bu yüzden sade, okunaklı ve keyifli tutuldu.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section contact-section" id="iletisim">
+        <div class="section-inner contact-layout">
+          <div class="contact-copy">
+            <p class="eyebrow">İletişim</p>
+            <h2>Antalya'da sizi bekliyoruz</h2>
+            <p>Antalya'da kahve, tatlı ve günün kısa molaları için bize uğrayabilirsiniz.</p>
+            <div class="contact-list">
+              <a href="tel:+905325438585">+90 532 543 85 85</a>
+              <a href="mailto:molin@molincoffee.com">molin@molincoffee.com</a>
+            </div>
+          </div>
+          <div class="map-card" aria-label="Cafe Molin konumu">
+            <iframe
+              title="Cafe Molin harita konumu"
+              src="https://www.google.com/maps?q=Cafe%20Molin%2C%20Ye%C5%9Filbah%C3%A7e%2C%20Metin%20Kasapo%C4%9Flu%20Cd.%20Aslan%20%C3%87avu%C5%9F%20sitesi%20No%3A41%2FB%20A%20blok%2C%2007160%20Muratpa%C5%9Fa%2FAntalya&output=embed"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>Molin Coffee Co. &amp; Desserts</span>
+    </footer>
+
+    <script src="app.js"></script>
   </body>
 </html>
